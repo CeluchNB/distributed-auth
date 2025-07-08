@@ -17,7 +17,7 @@ function getKey(header, callback) {
   });
 }
 
-const handler = async (event) => {
+export const handler = async (event) => {
   const authHeader = event.headers.authorization || event.headers.Authorization;
 
   if (!authHeader || !authHeader.toLowerCase().startsWith("bearer ")) {
@@ -25,8 +25,6 @@ const handler = async (event) => {
   }
 
   const token = authHeader.split(" ")[1];
-
-  console.log("token", token);
 
   try {
     const decoded = await new Promise((resolve, reject) => {
@@ -44,8 +42,6 @@ const handler = async (event) => {
         }
       );
     });
-
-    console.log("decoded token", decoded);
 
     // ✅ Token is valid
     return {

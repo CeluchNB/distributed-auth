@@ -7,9 +7,7 @@ export const Home = () => {
   const { user, isAuthenticated, isLoading, getAccessTokenSilently, logout } =
     useAuth0();
 
-  console.log("user", user);
-  console.log("isAuthenticated", isAuthenticated);
-  console.log("isLoading", isLoading);
+  console.log("data", isLoading, isAuthenticated, user);
 
   const fetchOne = async () => {
     const token = await getAccessTokenSilently();
@@ -27,7 +25,6 @@ export const Home = () => {
       headers: { Authorization: `Bearer ${token}` },
     });
     const result = await response.json();
-    console.log("fetchTwo result", result);
     return result;
   };
 
