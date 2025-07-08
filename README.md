@@ -12,4 +12,3 @@ It includes:
   - S3 bucket for lambda code
 - A lambda to validate an Auth0 JWT
 - Two lambas that return HTTP responses
--

@@ -9,11 +9,11 @@ import { QueryClient, QueryClientProvider } from "react-query";
 function App() {
   return (
     <Auth0Provider
-      domain="dev-woyyxkiic38yweid.us.auth0.com"
-      clientId="5loFLMhwgLdPDgVpb2NhUI3YySke0XfY"
+      domain=""
+      clientId=""
       authorizationParams={{
-        redirect_uri: "http://localhost:5173/home",
-        audience: "https://a1cm73htda.execute-api.us-east-1.amazonaws.com/prod",
+        redirect_uri: "/home",
+        audience: "",
       }}
     >
       <QueryClientProvider client={new QueryClient()}>
