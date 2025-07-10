@@ -1,5 +1,4 @@
 import { useAuth0 } from "@auth0/auth0-react";
-// import { useQuery } from "react-query";
 
 const URL = "https://a1cm73htda.execute-api.us-east-1.amazonaws.com/prod";
 
