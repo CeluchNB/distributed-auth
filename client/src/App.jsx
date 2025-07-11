@@ -12,7 +12,7 @@ function App() {
       domain=""
       clientId=""
       authorizationParams={{
-        redirect_uri: "/home",
+        redirect_uri: "http://localhost:5173/home",
         audience: "",
       }}
     >

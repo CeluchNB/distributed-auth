@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 
-const URL = "https://a1cm73htda.execute-api.us-east-1.amazonaws.com/prod";
+const URL = "";
 
 export const Home = () => {
   const { user, isAuthenticated, isLoading, getAccessTokenSilently, logout } =
@@ -10,7 +10,7 @@ export const Home = () => {
 
   const fetchOne = async () => {
     const token = await getAccessTokenSilently();
-    const response = await fetch(`${URL}/service-1`, {
+    const response = await fetch(`${URL}/service1`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const result = await response.json();
@@ -20,7 +20,7 @@ export const Home = () => {
   const fetchTwo = async () => {
     const token = await getAccessTokenSilently();
 
-    const response = await fetch(`${URL}/service-2`, {
+    const response = await fetch(`${URL}/service2`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const result = await response.json();

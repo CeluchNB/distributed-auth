@@ -2,8 +2,8 @@
 import jwt from "jsonwebtoken";
 import jwksClient from "jwks-rsa";
 
-const auth0Domain = "dev-woyyxkiic38yweid.us.auth0.com";
-const audience = "https://a1cm73htda.execute-api.us-east-1.amazonaws.com/prod";
+const auth0Domain = "";
+const audience = process.env.AUDIENCE;
 
 const client = jwksClient({
   jwksUri: `https://${auth0Domain}/.well-known/jwks.json`,

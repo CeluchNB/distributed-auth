@@ -13,6 +13,12 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.31.0"
     }
+    archive = {
+      source = "hashicorp/archive"
+    }
+    null = {
+      source = "hashicorp/null"
+    }
   }
 
   required_version = ">= 1.2"
