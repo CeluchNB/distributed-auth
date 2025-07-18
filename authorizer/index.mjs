@@ -43,7 +43,7 @@ export const handler = async (event) => {
       );
     });
 
-    // ✅ Token is valid
+    console.log("token is valid");
     return {
       isAuthorized: true,
       context: {

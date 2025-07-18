@@ -23,6 +23,17 @@ data "archive_file" "service_2_lambda_zip" {
   output_path = "service_2.zip"
 }
 
+
+resource "aws_cloudwatch_log_group" "authorizer_log_group" {
+  name              = "/aws/lambda/distributed-auth-authorizer"
+  retention_in_days = 14
+
+  tags = {
+    Environment = "production"
+    Function    = "distributed-auth-authorizer"
+  }
+}
+
 resource "aws_lambda_function" "authorizer_lambda" {
   filename         = data.archive_file.authorizer_lambda_zip.output_path
   function_name    = "distributed-auth-authorizer"
@@ -32,10 +43,33 @@ resource "aws_lambda_function" "authorizer_lambda" {
 
   runtime = "nodejs20.x"
 
+  logging_config {
+    application_log_level = "DEBUG"
+    log_format            = "JSON"
+    system_log_level      = "WARN"
+  }
+
+
+
   environment {
     variables = {
       AUDIENCE = aws_apigatewayv2_stage.v1_stage.invoke_url
     }
+  }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.lambda_log_policy_attachment,
+    aws_cloudwatch_log_group.service_1_log_group
+  ]
+}
+
+resource "aws_cloudwatch_log_group" "service_1_log_group" {
+  name              = "/aws/lambda/service-1"
+  retention_in_days = 14
+
+  tags = {
+    Environment = "production"
+    Function    = "service-1"
   }
 }
 
@@ -45,8 +79,17 @@ resource "aws_lambda_function" "service_1_lambda" {
   role             = aws_iam_role.lambda_execution_role.arn
   handler          = "index.handler"
   source_code_hash = data.archive_file.service_1_lambda_zip.output_base64sha256
+  runtime          = "nodejs20.x"
+  logging_config {
+    application_log_level = "DEBUG"
+    log_format            = "JSON"
+    system_log_level      = "WARN"
+  }
 
-  runtime = "nodejs20.x"
+  depends_on = [
+    aws_iam_role_policy_attachment.lambda_log_policy_attachment,
+    aws_cloudwatch_log_group.service_1_log_group
+  ]
 }
 
 resource "aws_lambda_function" "service_2_lambda" {
@@ -83,18 +126,18 @@ resource "aws_apigatewayv2_authorizer" "authorizer_lambda" {
   identity_sources                  = ["$request.header.Authorization"]
   name                              = "gateway-authorizer"
   authorizer_payload_format_version = "2.0"
+  enable_simple_responses = true
 }
 
 resource "aws_apigatewayv2_integration" "service_1_integration" {
   api_id           = aws_apigatewayv2_api.api_gateway.id
   integration_type = "AWS_PROXY"
 
-  connection_type           = "INTERNET"
-  content_handling_strategy = "CONVERT_TO_TEXT"
-  description               = "Integration for Lambda Authorizer"
-  integration_uri           = aws_lambda_function.service_1_lambda.invoke_arn
-  integration_method        = "POST"
-  passthrough_behavior      = "WHEN_NO_MATCH"
+  connection_type      = "INTERNET"
+  description          = "Integration for Lambda Authorizer"
+  integration_uri      = aws_lambda_function.service_1_lambda.invoke_arn
+  integration_method   = "POST"
+  passthrough_behavior = "WHEN_NO_MATCH"
 }
 
 resource "aws_apigatewayv2_route" "sevice_1_route" {
