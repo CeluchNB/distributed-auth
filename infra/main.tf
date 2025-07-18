@@ -138,6 +138,7 @@ resource "aws_apigatewayv2_integration" "service_1_integration" {
   integration_uri      = aws_lambda_function.service_1_lambda.invoke_arn
   integration_method   = "POST"
   passthrough_behavior = "WHEN_NO_MATCH"
+  payload_format_version = "2.0"
 }
 
 resource "aws_apigatewayv2_route" "sevice_1_route" {
@@ -159,6 +160,8 @@ resource "aws_apigatewayv2_integration" "service_2_integration" {
   description        = "Integration for Lambda Authorizer"
   integration_uri    = aws_lambda_function.service_2_lambda.invoke_arn
   integration_method = "POST"
+  passthrough_behavior = "WHEN_NO_MATCH"
+  payload_format_version = "2.0"
 }
 
 resource "aws_apigatewayv2_route" "sevice_2_route" {

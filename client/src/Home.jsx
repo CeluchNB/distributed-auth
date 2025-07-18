@@ -1,12 +1,10 @@
 import { useAuth0 } from "@auth0/auth0-react";
 
-const URL = "";
+const URL = import.meta.env.VITE_AUDIENCE;
 
 export const Home = () => {
   const { user, isAuthenticated, isLoading, getAccessTokenSilently, logout } =
     useAuth0();
-
-  console.log("data", isLoading, isAuthenticated, user);
 
   const fetchOne = async () => {
     const token = await getAccessTokenSilently();

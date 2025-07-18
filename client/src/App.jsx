@@ -9,11 +9,11 @@ import { QueryClient, QueryClientProvider } from "react-query";
 function App() {
   return (
     <Auth0Provider
-      domain=""
-      clientId=""
+      domain={import.meta.env.VITE_AUTH0_DOMAIN}
+      clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
       authorizationParams={{
         redirect_uri: "http://localhost:5173/home",
-        audience: "",
+        audience: import.meta.env.VITE_AUDIENCE,
       }}
     >
       <QueryClientProvider client={new QueryClient()}>
