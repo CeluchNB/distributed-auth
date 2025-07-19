@@ -1,6 +1,6 @@
 resource "null_resource" "function_binary" {
   provisioner "local-exec" {
-    command = "cd ${path.module}/../go-service; GOOS=linux GOARCH=arm64 CGOENABLED=0 go build ."
+    command = "cd ${path.module}/../go-service; GOOS=linux GOARCH=arm64 CGOENABLED=0 go build -o bootstrap main.go"
   }
 }
 
@@ -19,7 +19,7 @@ data "archive_file" "service_1_lambda_zip" {
 data "archive_file" "service_2_lambda_zip" {
   depends_on  = [null_resource.function_binary]
   type        = "zip"
-  source_file = "${path.module}/../go-service/go-lambda"
+  source_file = "${path.module}/../go-service/bootstrap"
   output_path = "service_2.zip"
 }
 
@@ -80,6 +80,7 @@ resource "aws_lambda_function" "service_1_lambda" {
   handler          = "index.handler"
   source_code_hash = data.archive_file.service_1_lambda_zip.output_base64sha256
   runtime          = "nodejs20.x"
+
   logging_config {
     application_log_level = "DEBUG"
     log_format            = "JSON"
@@ -96,9 +97,10 @@ resource "aws_lambda_function" "service_2_lambda" {
   filename      = data.archive_file.service_2_lambda_zip.output_path
   function_name = "service-2"
   role          = aws_iam_role.lambda_execution_role.arn
-  handler       = "go-lambda"
+  handler       = "bootstrap"
 
-  runtime = "provided.al2"
+  runtime       = "provided.al2023"
+  architectures = ["arm64"]
 }
 
 resource "aws_apigatewayv2_api" "api_gateway" {
@@ -126,18 +128,18 @@ resource "aws_apigatewayv2_authorizer" "authorizer_lambda" {
   identity_sources                  = ["$request.header.Authorization"]
   name                              = "gateway-authorizer"
   authorizer_payload_format_version = "2.0"
-  enable_simple_responses = true
+  enable_simple_responses           = true
 }
 
 resource "aws_apigatewayv2_integration" "service_1_integration" {
   api_id           = aws_apigatewayv2_api.api_gateway.id
   integration_type = "AWS_PROXY"
 
-  connection_type      = "INTERNET"
-  description          = "Integration for Lambda Authorizer"
-  integration_uri      = aws_lambda_function.service_1_lambda.invoke_arn
-  integration_method   = "POST"
-  passthrough_behavior = "WHEN_NO_MATCH"
+  connection_type        = "INTERNET"
+  description            = "Integration for Lambda Service 1"
+  integration_uri        = aws_lambda_function.service_1_lambda.invoke_arn
+  integration_method     = "POST"
+  passthrough_behavior   = "WHEN_NO_MATCH"
   payload_format_version = "2.0"
 }
 
@@ -150,17 +152,15 @@ resource "aws_apigatewayv2_route" "sevice_1_route" {
   authorization_type = "CUSTOM"
 }
 
-
-
 resource "aws_apigatewayv2_integration" "service_2_integration" {
   api_id           = aws_apigatewayv2_api.api_gateway.id
   integration_type = "AWS_PROXY"
 
-  connection_type    = "INTERNET"
-  description        = "Integration for Lambda Authorizer"
-  integration_uri    = aws_lambda_function.service_2_lambda.invoke_arn
-  integration_method = "POST"
-  passthrough_behavior = "WHEN_NO_MATCH"
+  connection_type        = "INTERNET"
+  description            = "Integration for Lambda Service 2"
+  integration_uri        = aws_lambda_function.service_2_lambda.invoke_arn
+  integration_method     = "POST"
+  passthrough_behavior   = "WHEN_NO_MATCH"
   payload_format_version = "2.0"
 }
 

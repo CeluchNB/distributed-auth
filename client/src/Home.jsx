@@ -3,8 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 const URL = import.meta.env.VITE_AUDIENCE;
 
 export const Home = () => {
-  const { user, isAuthenticated, isLoading, getAccessTokenSilently, logout } =
-    useAuth0();
+  const { getAccessTokenSilently, logout } = useAuth0();
 
   const fetchOne = async () => {
     const token = await getAccessTokenSilently();
@@ -12,6 +11,7 @@ export const Home = () => {
       headers: { Authorization: `Bearer ${token}` },
     });
     const result = await response.json();
+    console.log("result", result);
     return result;
   };
 
@@ -22,6 +22,7 @@ export const Home = () => {
       headers: { Authorization: `Bearer ${token}` },
     });
     const result = await response.json();
+    console.log("result", result);
     return result;
   };
 
