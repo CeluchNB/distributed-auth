@@ -90,3 +90,5 @@ override.tf.json
 terraform.rc
 
 *.zip
+
+bootstrap

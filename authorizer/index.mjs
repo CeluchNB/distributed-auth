@@ -2,7 +2,7 @@
 import jwt from "jsonwebtoken";
 import jwksClient from "jwks-rsa";
 
-const auth0Domain = "";
+const auth0Domain = process.env.AUTH0_DOMAIN;
 const audience = process.env.AUDIENCE;
 
 const client = jwksClient({
