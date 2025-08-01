@@ -38,7 +38,7 @@ resource "aws_lambda_function" "authorizer_lambda" {
 
   environment {
     variables = {
-      AUDIENCE = aws_apigatewayv2_stage.v1_stage.invoke_url
+      AUDIENCE     = aws_apigatewayv2_stage.v1_stage.invoke_url
       AUTH0_DOMAIN = local.auth0_domain
     }
   }
@@ -80,10 +80,10 @@ resource "aws_lambda_function" "service_1_lambda" {
 }
 
 resource "aws_lambda_function" "service_2_lambda" {
-  filename      = data.archive_file.service_2_lambda_zip.output_path
-  function_name = "service-2"
-  role          = aws_iam_role.lambda_execution_role.arn
-  handler       = "bootstrap"
+  filename         = data.archive_file.service_2_lambda_zip.output_path
+  function_name    = "service-2"
+  role             = aws_iam_role.lambda_execution_role.arn
+  handler          = "bootstrap"
   source_code_hash = data.archive_file.service_2_lambda_zip.output_base64sha256
 
   runtime       = "provided.al2023"

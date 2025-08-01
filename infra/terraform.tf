@@ -13,6 +13,12 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 6.6.0"
     }
+
+    auth0 = {
+      source = "auth0/auth0"
+      version = "1.25.0"
+    }
+
     archive = {
       source = "hashicorp/archive"
     }
@@ -27,3 +33,5 @@ terraform {
 provider "aws" {
   region = "us-east-1"
 }
+
+provider "auth0" {}
