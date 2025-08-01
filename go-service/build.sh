@@ -1,0 +1,1 @@
+GOOS=linux GOARCH=arm64 CGOENABLED=0 go build -o bootstrap main.go
