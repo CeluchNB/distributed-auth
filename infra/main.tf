@@ -187,3 +187,4 @@ resource "aws_lambda_permission" "service_2_permission" {
 output "api_gateway_url" {
   value = aws_apigatewayv2_stage.v1_stage.invoke_url
 }
+
