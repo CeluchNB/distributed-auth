@@ -19,13 +19,18 @@ terraform {
       version = "1.25.0"
     }
 
-    google = {
-      source  = "hashicorp/google"
-      version = "6.46.0"
-    }
+    # google = {
+    #   source  = "hashicorp/google"
+    #   version = "6.46.0"
+    # }
 
     archive = {
       source = "hashicorp/archive"
+    }
+
+    random = {
+      source  = "hashicorp/random"
+      version = "3.7.2"
     }
     null = {
       source = "hashicorp/null"
@@ -41,8 +46,10 @@ provider "aws" {
 
 provider "auth0" {}
 
-provider "google" {
-  project = "distributed-auth"
-  region  = local.google_project_region
-  zone    = local.google_project_zone
-}
+# provider "google" {
+#   project = "distributed-auth"
+#   region  = local.google_project_region
+#   zone    = local.google_project_zone
+# }
+
+provider "random" {}
