@@ -15,7 +15,11 @@ It includes:
 
 ### Current Steps To Work
 
+- Create Google OAuth client in GCP
+- Add Client ID to locals + Client Secret as variable
+- Create Auth0 Tenant, add domain to locals
 - `./deploy.sh`
-- Take api_gateway_url output and update client env
-- Create API in auth0 with api_gateway_url
-- Grant new auth0 API access to "My API" in "Machine to Machine Applications" (probably a better way to implement this)
+
+### To Teardown
+
+- `./teardown.sh`
