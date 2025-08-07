@@ -39,7 +39,7 @@ resource "aws_lambda_function" "authorizer_lambda" {
   environment {
     variables = {
       AUDIENCE     = aws_apigatewayv2_stage.v1_stage.invoke_url
-      AUTH0_DOMAIN = local.auth0_domain
+      AUTH0_DOMAIN = var.auth0_domain
     }
   }
 

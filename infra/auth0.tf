@@ -30,7 +30,7 @@ resource "auth0_connection" "google_connection" {
   strategy = "google-oauth2"
 
   options {
-    client_id                = local.google_client_id
+    client_id                = var.google_client_id
     client_secret            = var.google_client_secret
     allowed_audiences        = ["http://localhost:5173", aws_apigatewayv2_stage.v1_stage.invoke_url]
     scopes                   = ["email", "profile", "gmail"]
