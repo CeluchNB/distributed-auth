@@ -7,7 +7,7 @@ export const Home = () => {
 
   const fetchOne = async () => {
     const token = await getAccessTokenSilently();
-    const response = await fetch(`${URL}/service1`, {
+    const response = await fetch(`${URL}/service-1`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const result = await response.json();
@@ -18,7 +18,7 @@ export const Home = () => {
   const fetchTwo = async () => {
     const token = await getAccessTokenSilently();
 
-    const response = await fetch(`${URL}/service2`, {
+    const response = await fetch(`${URL}/service-2`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const result = await response.json();
