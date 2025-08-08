@@ -1,7 +1,7 @@
 
 cd go-service; ./build.sh; cd ..
 
-cd infra; terraform plan; terraform apply -auto-approve
+cd infra; terraform test; terraform plan; terraform apply -auto-approve
 
 api_gateway_url=$(terraform output api_gateway_url)
 auth0_client_id=$(terraform output auth0_client_id)
